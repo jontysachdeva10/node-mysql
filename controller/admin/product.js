@@ -27,7 +27,6 @@ exports.addProduct = (req, res) => {
             res.status(200).json(results);
         }
     })
-    
 }
 
 // Delete Product
@@ -35,11 +34,11 @@ exports.removeProduct = (req, res) => {
     const delete_query = "delete from products where id= "+req.params.id;
     pool.query(delete_query, (error) => {
         if(!error) {
-            res.status(200).send('Id deleted: '+req.params.id);
+            return res.status(200).send('Id deleted: '+req.params.id);
         }
         else {
             console.log(error);
-            res.status(401).send('Could not delete');
+            return res.status(401).send('Could not delete');
         }
     })
 }
@@ -48,11 +47,11 @@ exports.removeProduct = (req, res) => {
 exports.getProduct = (req, res) => {
     pool.query('select * from products', (error, results) => {
         if(!error) {
-            res.status(200).json(results);
+            return res.status(200).json(results);
         }
         else {
             console.log(error);
-            res.status(401).send('Could not fetch');
+            return res.status(401).send('Could not fetch');
         }
     })
 }
@@ -66,11 +65,11 @@ exports.updateProduct = (req, res) => {
 
     pool.query(update_query, (error) => {
         if(!error) {
-            res.status(200).send('Id Updated: '+req.params.id);
+            return res.status(200).send('Id Updated: '+req.params.id);
         }
         else {
             console.error(error);
-            res.status(401).send('Could not update');
+            return res.status(401).send('Could not update');
         }
     })                   
 }

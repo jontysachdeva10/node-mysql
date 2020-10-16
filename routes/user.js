@@ -21,7 +21,7 @@ router.post('/', [
  * 
  * @route GET /register
  */
-router.get('/', [
+router.post('/', [
     check('email', 'Email is required').not().isEmpty(),
     check('password', 'Password is required').not().isEmpty()
 ],loginUser);

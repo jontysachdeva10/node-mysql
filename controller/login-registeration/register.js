@@ -13,7 +13,8 @@ exports.registerUser = async (req, res) => {
     try {
        const ePassword = await hashSync(password, genSaltSync(10));
        const insert_query = `insert into users(first_name, last_name, email, password, role) values(?,?,?,?,?)`
-       if(role === 'customer' || role === 'admin') {
+       if(role === 'customer') 
+       {
             pool.query(insert_query , [
                 first_name,
                 last_name,
@@ -23,22 +24,22 @@ exports.registerUser = async (req, res) => {
                 ],
                 (error, result) => {
                     if(error) {
-                        res.status(401).send('Could not register..');
+                        return res.status(401).send('Could not register..');
                     }
                     else {
-                        console.log('Registered successfully !!');
-                        return res.status(200).json(result)
+                        return res.status(200).send('Registered Successfully !');
+    
                     }
                 }
             )
         }
         else {
-            res.status(401).send('Choose customer as a role');
+            return res.status(401).send('Choose customer as a role');
         }  
     }    
     catch (error) {
         console.log('Server Error' +error); 
-        res.status(400).json({msg: 'Server Error'});
+        return res.status(400).json({msg: 'Server Error'});
     }
     
 }
