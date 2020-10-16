@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {check} = require('express-validator');
-const {getRole} = require('../middleware/role');
+const {getRole, checkRole} = require('../middleware/role');
 const {addProduct, getProduct, removeProduct, updateProduct} = require('../controller/admin/product');
 
 /**
@@ -21,7 +21,7 @@ router.post('/', [getRole, [
  * 
  * @route GET /product
  */
-router.get('/', getRole, getProduct);
+router.get('/', checkRole, getProduct);
 
 /**
  * @desc Delete Product by id

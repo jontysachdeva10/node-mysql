@@ -1,10 +1,12 @@
 const pool = require('../../database/dbConfig');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
+const session = require('express-session');
 
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
     const getUser = `select * from users where email = ?`
+
     pool.query(getUser, [email], async (err, results) => {
 
         const errors = validationResult(req);
@@ -16,21 +18,23 @@ exports.loginUser = async (req, res) => {
             if(results.length > 0) {
                 const isMatched = await bcrypt.compare(password, results[0].password);
                 if(isMatched) {
-                    res.json(results[0]);
-                    console.log('Login Successful');
-                    console.log(results[0].role);
+                    req.session.role = results[0].role;
+                    res.status(200).json(results[0]);
+                    // console.log('Login Successful');
+                    // console.log(results[0].role);
+                    
                 }
                 else {
-                    res.send('Credentials doesnt match');
+                    res.status(401).send('Credentials doesnt match');
                 }
             }
             else {
-                res.send('Email doesnt exists');
+                res.status(401).send('Email doesnt exists');
             }
         } 
         catch (error) {
             console.log(error);
-            res.json({msg: 'Server Error'});
+            res.status(400).json({msg: 'Server Error'});
         }
         
     });

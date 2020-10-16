@@ -19,12 +19,12 @@ exports.addProduct = (req, res) => {
         currency
     ], (results, err) => {
         if(err) {
-            res.json({msg: 'Error occured'});
+            res.status(401).json({msg: 'Couldnt save Product'});
             console.error(err);
         }
         else {
-            console.log('Product entered successfully');
-            res.json(results);
+            console.log('Product saved successfully!!');
+            res.status(200).json(results);
         }
     })
     
@@ -35,10 +35,11 @@ exports.removeProduct = (req, res) => {
     const delete_query = "delete from products where id= "+req.params.id;
     pool.query(delete_query, (error) => {
         if(!error) {
-            res.send('Id deleted: '+req.params.id);
+            res.status(200).send('Id deleted: '+req.params.id);
         }
         else {
             console.log(error);
+            res.status(401).send('Could not delete');
         }
     })
 }
@@ -47,10 +48,11 @@ exports.removeProduct = (req, res) => {
 exports.getProduct = (req, res) => {
     pool.query('select * from products', (error, results) => {
         if(!error) {
-            res.send(results);
+            res.status(200).json(results);
         }
         else {
             console.log(error);
+            res.status(401).send('Could not fetch');
         }
     })
 }
@@ -64,10 +66,11 @@ exports.updateProduct = (req, res) => {
 
     pool.query(update_query, (error) => {
         if(!error) {
-            res.send('Id Updated: '+req.params.id);
+            res.status(200).send('Id Updated: '+req.params.id);
         }
         else {
             console.error(error);
+            res.status(401).send('Could not update');
         }
     })                   
 }
