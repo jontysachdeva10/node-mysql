@@ -13,15 +13,13 @@ exports.orderDetails = (req, res) => {
             paymentId,
             payer_id,
             payment_total
-            ], async (error, results) => {
+            ], (error, results) => {
             if(!error) 
             {        
-                console.log('WElcome');
-                     
                 const order_id = results['insertId'];
                 console.log(order_id);
 
-                products.map(item => {
+                return products.map(item => {
     
                     pool.query(`insert into order_items(order_id, product_id, created_at) values(?,?,CURRENT_TIMESTAMP)`,
                     [order_id, item.id], 
@@ -33,18 +31,18 @@ exports.orderDetails = (req, res) => {
                             return res.status(401).send('Order could not be placed');
                         }
                     });
-                });
-                
+                }); 
             }
-            console.log('Error');
+            else {
+                return res.status(400).send("Error!!");
+            }
         });
     } 
-    catch (error) 
-    {
+    catch (error) { 
         console.log(error);
-        return res.status(400).json({msg: 'Server Error'}); 
+        return res.status(400).json({msg: 'Server Error'});
     }
-   
+        
 }
 
 

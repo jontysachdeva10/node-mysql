@@ -9,7 +9,7 @@ const { loginUser } = require('../controller/login-registeration/login');
  * 
  * @route POST /register
  */
-router.post('/', [
+router.post('/register', [
     check('first_name', 'First name is required').not().isEmpty(),
     check('last_name', 'Last name is required').not().isEmpty(),
     check('email', 'Enter a valid email').isEmail(),
@@ -19,9 +19,9 @@ router.post('/', [
 /**
  * @desc Login User
  * 
- * @route GET /register
+ * @route POST /register
  */
-router.post('/', [
+router.post('/login', [
     check('email', 'Email is required').not().isEmpty(),
     check('password', 'Password is required').not().isEmpty()
 ],loginUser);

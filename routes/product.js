@@ -9,7 +9,7 @@ const {addProduct, getProduct, removeProduct, updateProduct} = require('../contr
  * 
  * @route POST /product
  */
-router.post('/', [getRole, [
+router.post('/', [checkRole, [
     check('name', 'Name is required').not().isEmpty(),
     check('description', 'Description is required').not().isEmpty(),
     check('price', 'Price is required').not().isEmpty(),
@@ -28,13 +28,13 @@ router.get('/', checkRole, getProduct);
  * 
  * @route DELETE /product
  */
-router.delete('/:id', getRole, removeProduct);
+router.delete('/:id', checkRole, removeProduct);
 
 /**
  * @desc Update Product by id
  * 
  * @route PUT /product
  */
-router.put('/:id', getRole, updateProduct);
+router.put('/:id', checkRole, updateProduct);
 
 module.exports = router;
